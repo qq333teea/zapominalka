@@ -1,0 +1,11 @@
+#!/bin/sh
+
+TARGET=$(ls ../target/uberjar           \
+    | grep $(head -n1 ../project.clj    \
+    | cut -d' ' -f3                     \
+    | tr -d '"')-standalone)
+
+mkdir -p ansible/files
+cp ../target/uberjar/$TARGET ansible/files/zapominalka.jar
+cd ansible
+# ...
