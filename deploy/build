@@ -1,4 +1,4 @@
 #!/bin/sh
 cd ..
-TARGET=$(lein uberjar | grep standalone.jar | cut -d' ' -f1)
+TARGET=$(lein uberjar | grep standalone.jar | cut -d' ' -f2)
 chmod 755 $TARGET

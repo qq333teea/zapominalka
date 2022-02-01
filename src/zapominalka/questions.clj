@@ -4,6 +4,18 @@
 
 (def db-file "resources/db.json")
 
+(defn send-utf-8
+  "unicode workaround
+   TODO: proper unicode support"
+  [string]
+  (clojure.string/replace
+   string
+  #"\\u(\w{4})"
+  (fn [[_ n]]
+    (-> (Integer/parseInt n 16)
+        char
+        str))))
+
 (defn get-db
   "reads db"
   []
@@ -11,7 +23,7 @@
 
 (defn addq 
   "adds new keyword to db and saves it"
-  [t req]
+  [_ req]
   (let [data (json/read-str req)]
     (let [new-key (first (keys data))]
       (spit db-file
@@ -21,16 +33,16 @@
 
 (defn getq
   "requst existing question from the db"
-  [t req]
+  [_ req]
   (let [data (get (get-db) req)]
-    (json/write-str (get data (rand-int (count data))))))
+    (send-utf-8 (json/write-str (get data (rand-int (count data)))))))
 
 (defn list-keywords
   "returns list of all available keywords"
-  [t]
+  [_]
   (json/write-str (keys (get-db))))
 
 (defn dump-db
   "dumps current db value"
-  [t]
-  (str (slurp db-file)))
+  [_]
+  (send-utf-8 (slurp db-file)))

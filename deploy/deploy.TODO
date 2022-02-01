@@ -8,4 +8,4 @@ TARGET=$(ls ../target/uberjar           \
 mkdir -p ansible/files
 cp ../target/uberjar/$TARGET ansible/files/zapominalka.jar
 cd ansible
-# ...
+ansible-playbook -i inventories/$1 sweet-tooth.yml --skip-tags=install

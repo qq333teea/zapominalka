@@ -2,6 +2,7 @@
   (:require [zapominalka.questions :as que]
             [compojure.core :as c]
             [clojure.pprint :as pp]
+            [hiccup.core :as h]
             [compojure.route :as route]))
 
 (defn route-getq
@@ -23,7 +24,7 @@
              (que/addq (:q (:params req))))})
 
 (defn route-db
-  "home page route"
+  ""
   [req]
   {:status  200
    :headers {"Content-Type" "text/html"}
@@ -32,7 +33,7 @@
              (que/dump-db))})
 
 (defn route-list-keys
-  "home page route"
+  ""
   [req]
   {:status  200
    :headers {"Content-Type" "text/html"}
@@ -45,7 +46,14 @@
   [req]
   {:status  200
    :headers {"Content-Type" "text/html"}
-   :body    "Home"})
+   :body    (str (h/html [:html
+                          [:body
+                           [:h1 "zapominalka"]
+                           [:ul
+                            [:li "/getq - get question by key"]
+                            [:li "/addq - add question from json"]
+                            [:li "/db   - dump db"]
+                            [:li "/keys - get all available keys"]]]]))})
 
 (defn error-page
   "error route"
