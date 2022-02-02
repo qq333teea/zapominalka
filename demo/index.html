@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+  <head>
+	<meta charset="UTF-8">
+    <title>zapominalka</title>
+  </head>
+  <body>
+    <h1>zapominalka</h1>
+	<h2 id="question">Question: </h2>
+	<h3 id="answer">Answer: </h3>
+	<div id="mainBox">
+	  <button onclick="getQuestion()" id="getQuestion">get question</button> 
+	  <button id="getAnswer">🙃</button> 
+      <select id="selectKey">
+		<option>Choose a topic</option>
+      </select>
+	</div>
+	<form action="http://localhost:3000/addq?q=" method="GET">
+	  <h3>Add new JSON key to the DB:</h3>
+	  <div>
+	  <input type="text" name="q">  
+	  <button>Submit</button>
+	  </div>
+	</form>
+    <script type="text/javascript">
+
+	  const apiUrl = 'http://localhost:3000';
+
+      var select = document.getElementById("selectKey");
+	  
+	  const questionHeader = document.getElementById("question");
+	  const answerHeader = document.getElementById("answer");
+	  const getQuestionButton = document.getElementById("getQuestion");
+	  const getAnswerButton = document.getElementById("getAnswer");
+
+      function setKeys(key) {
+		  var select = document.getElementById("selectKey");
+          
+          for (var i = 0; i < key.length; i++) {
+              var opt = key[i];
+              var el = document.createElement("option");
+              el.textContent = opt;
+              el.value = opt;
+              select.appendChild(el);
+          }
+      }
+
+	  function setAnswer(data) {
+			getAnswerButton.onclick = function() {
+				answerHeader.textContent = 'Answer: ' + data[0];
+			}
+	  }
+
+	  function showAnswer(data) {
+		  questionHeader.textContent = 'Question: ' + data[1];
+		  getAnswerButton.textContent = "get answer";
+
+		  setAnswer(data);
+	  }
+
+	  function getQuestion() {
+
+	  questionHeader.textContent = 'Question: ';
+	  answerHeader.textContent = 'Answer: ';
+
+		  fetch(apiUrl + '/getq?q=' + select.value)
+              .then(response => response.json())
+              .then(data => showAnswer(data));
+
+      }
+
+      fetch(apiUrl + '/keys')
+    .then(response => response.json())
+    .then(data => setKeys(data));
+
+    </script>
+  </body>
+</html>
