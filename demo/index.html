@@ -16,7 +16,7 @@
 		<option>Choose a topic</option>
       </select>
 	</div>
-	<form action="http://localhost:3000/addq?q=" method="GET">
+	<form action="/api/addq?q=" method="GET">
 	  <h3>Add new JSON key to the DB:</h3>
 	  <div>
 	  <input type="text" name="q">  
@@ -25,7 +25,7 @@
 	</form>
     <script type="text/javascript">
 
-	  const apiUrl = 'http://localhost:3000';
+	  const apiUrl = '/api'
 
       var select = document.getElementById("selectKey");
 	  

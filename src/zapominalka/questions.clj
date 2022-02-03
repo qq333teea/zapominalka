@@ -2,7 +2,9 @@
   (:require [clojure.data.json :as json]
             [clojure.java.io :as io]))
 
-(def db-file "resources/db.json")
+(def db-file
+  (str (or (System/getenv "DBFILE")
+           "resources/db.json")))
 
 (defn send-utf-8
   "unicode workaround

@@ -1,0 +1,84 @@
+---
+- hosts: webservers
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Make serevr group
+      ansible.builtin.group:
+        name: server
+        state: present
+    - name: Make server user
+      ansible.builtin.user:
+        name: server
+        shell: /bin/bash
+        groups: server
+        append: yes
+    - name: Create /var/www
+      ansible.builtin.file:
+        path: /var/www
+        state: directory
+        mode: '0755'
+    - name: Create /var/zapominalka
+      ansible.builtin.file:
+        path: /var/zapominalka
+        state: directory
+        mode: '0755'
+    - name: copy /var/www/index.html
+      copy:
+        src: files/index.html
+        dest: /var/www/index.html
+        owner: server
+        group: server
+        mode: 0644
+    - name: copy /var/zapominalka/zapominalka.jar
+      copy:
+        src: files/zapominalka.jar
+        dest: /var/zapominalka/zapominalka.jar
+        owner: server
+        group: server
+        mode: 0644
+    - name: copy /var/zapominalka/db.json
+      copy:
+        src: files/db.json
+        dest: /var/zapominalka/db.json
+        owner: server
+        group: server
+        mode: 0644
+    - name: Install java
+      apt:
+        pkg: openjdk-17-jre
+        state: present
+        update-cache: yes
+    - name: Copy systemd service
+      copy:
+        src: config/zapominalka.service
+        dest: /etc/systemd/system/zapominalka.service
+        owner: server
+        group: server
+        mode: 0644
+    - name: Enable systemd service
+      ansible.builtin.systemd:
+        name: zapominalka
+        enabled: yes
+        state: started
+        masked: no
+    - name: Install nginx
+      apt:
+        pkg: nginx
+        state: present
+        update-cache: yes
+    - name : Copy nginx.conf
+      copy:
+        src: config/nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: server
+        group: server
+        mode: 0644
+    - name: Restart nginx
+      ansible.builtin.systemd:
+        name: nginx
+        enabled: yes
+        state: restarted
+        masked: no
+

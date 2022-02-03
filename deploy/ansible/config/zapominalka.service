@@ -1,0 +1,9 @@
+[Unit]
+Description=zapominalka
+
+[Service]
+Environment="DBFILE=/var/zapominalka/db.json"
+ExecStart=/usr/bin/env java -jar /var/zapominalka/zapominalka.jar
+
+[Install]
+WantedBy=multi-user.target
