@@ -1,32 +1,36 @@
 # zapominalka
 
-FIXME: description
+app to quickly learn something
 
-## Installation
+## Dependencies
 
-Download from http://example.com/FIXME.
+clojure, leiningen
+
+optional: ansible
+
+optional optional: vagrant
 
 ## Usage
 
-FIXME: explanation
-
     $ java -jar zapominalka-0.1.0-standalone.jar [args]
+
+    $ cd deploy
+    $ vagrant up
+    $ ./build && ./deploy vagrant-server
+
+`vagrant-server` is a host config file for ansible
+
+to add a real server go to `deploy/ansible`, add one
+and pass it's name to deploy script
 
 ## Options
 
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
+this program looks at 2 env variables: PORT and DBFILE,
+where PORT is port and DBFILE is the path to the dbfile
 
 ### Bugs
 
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+No bugs 😠
 
 ## License
 
